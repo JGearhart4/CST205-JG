@@ -1,0 +1,32 @@
+#! python3
+#Jeffrey Gearhart CST-205-01 
+#Median Value image blending 
+
+from PIL import Image
+from statistics import median
+filelist= ['1.png','2.png','3.png','4.png','5.png','6.png','7.png','8.png','9.png']
+im =[]
+for image in filelist:
+	im.append(Image.open('Project1Images/'+ image))
+pictureWidth= im[0].width
+pictureHeight= im[0].height
+outputImage= Image.new('RGB',(pictureWidth, pictureHeight))
+outputImagePixelAccess= outputImage.load()
+for x in range(0,pictureWidth):
+	for y in range(0,pictureHeight):
+		redPixelList=[]
+		greenPixelList=[]
+		bluePixelList=[]
+		for myImage in im:
+
+			myRed, myGreen, myBlue = myImage.getpixel((x,y))
+
+			redPixelList.append(myRed)
+			greenPixelList.append(myGreen)
+			bluePixelList.append(myBlue)
+		medianRed= int(median(redPixelList))
+		medianGreen= int (median(greenPixelList))
+		medianBlue= int (median(bluePixelList))
+		outputImagePixelAccess[x,y]= (medianRed, medianGreen, medianBlue)
+outputImage.save('finished.png')
+outputImage.show('finished.png')
